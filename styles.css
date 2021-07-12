@@ -1,0 +1,48 @@
+*{
+	margin:0;
+}
+html, body{
+	height:100%;
+}
+body{
+	background:#376481 url(bg.jpg);
+	background-size: 100% 100%;
+}
+#page-container{
+	width:100%;
+	min-height:100%;
+	background:url(bg_stripes.png);
+}
+#column{
+	width: 640px;
+	margin-left: auto;
+    margin-right: auto;
+	display:grid;
+}
+#top{
+	height:80px;
+}
+
+.nav{
+	height:20px;
+	background-color:#CCCCCC;
+}
+.nav ul{
+	padding:0px;
+	margin-left:220px;
+	text-align: center;
+}
+.nav ul li{
+	font-size:10pt;
+	list-style:none;
+	float:left
+}
+
+.nav ul li a{
+	text-decoration:none;
+	color:#4477BB;
+}
+
+#myCanvas{
+	background-color:white;
+}
