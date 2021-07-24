@@ -10,7 +10,7 @@ var max_x = 620,
 // 원 시작지점, 반지름, 원 모양을 결정하는 변수들
 var x = 50,
 	y = 207,
- 	r = 20,
+ 	r = 1,
  	startAngle = 0,
  	endAngle =  Math.PI*2;
 
@@ -19,6 +19,8 @@ var dx=1,
 	dy=1;
 
 var moving;
+
+var inc = true;
 
 // 공의 위치,움직임을 control하는 클래스
 class Ball {
@@ -33,38 +35,25 @@ class Ball {
 		    y_temp = y;
 		console.log("x_temp: "+x_temp+" y_temp: "+y_temp+"");
 		if(x_temp<=max_x/2){
-			x = Math.floor( ( Math.random() * (max_x - max_x/2)))
+			x = Math.floor( ( Math.random() * (max_x - max_x/2))+20)
 		}else{
-			x = Math.floor( ( Math.random() * (max_x/2 - min_x)))
+			x = Math.floor( ( Math.random() * (max_x/2 - min_x))-20)
 		};
 		if(y_temp<=max_y/2){
-			y = Math.floor( ( Math.random() * (max_y - max_y/2)))
+			y = Math.floor( ( Math.random() * (max_y - max_y/2))+20)
 		}else{
-			y = Math.floor( ( Math.random() * (max_y/2 - min_y)))
+			y = Math.floor( ( Math.random() * (max_y/2 - min_y))-20)
 		};
 		
-	}
-		speed(){
-		
-		var rand = Math.floor( ( Math.random() * ( 10 - 1 )+1));
-		var speed_rand = ( Math.random()+0.5);
-		console.log(speed_rand);
-		if(rand%2==0){
-			dx = speed_rand
-		}else{
-			dx = -speed_rand
-		};
-			
-		var rand = Math.floor( ( Math.random() * ( 10 - 1 )+1));
-		if(rand%2==0){
-			dy = speed_rand
-		}else{
-			dy = -speed_rand
-		};
 	}
 		
 		size(){
-			
+			var size_fast = 0.09;
+		if(inc){
+			r+=size_fast;	
+		}else{
+			r-=size_fast;
+		}
 	}
 			
 		draw1(){
@@ -79,7 +68,6 @@ function macroBall(){
 	ball.stop();
 	ball.position();
 	console.log("xpos: "+x+" ypos: "+y+"");
-	ball.speed();
 	ball.move();
 }
 
@@ -95,18 +83,25 @@ context.stroke();
 
 }
 
+function rad_check(r){
+	if(r>=30){
+		inc = false;
+	}
+	if(r<=2){
+		inc = true;
+	}
+
+}
+
 // 원을 지웠다 다시그리는 함수
 function draw(){
 	context.clearRect(0,0,canvas.width,canvas.height); // canvas 지우기 코드
 	CircleForm(x,y,r,startAngle, endAngle);
-	if(x<min_x||x>max_x || y<min_y||y>max_y){
-		macroBall();
-	}else{
-		x += dx;
-		y -= dy;
-	}
-	
+	rad_check(r);
+	ball.size();
 
+	
+	
 }
 function draw1(){
 	CircleForm(x,y,r,startAngle, endAngle);
