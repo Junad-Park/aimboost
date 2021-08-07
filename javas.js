@@ -2,14 +2,14 @@ var canvas = document.getElementById('myCanvas');
 var context = canvas.getContext('2d');
 
 // canvas 최대,최소 크기
-var max_x = 620,
-	min_x = 20,	
-	min_y = 20,
-	max_y = 470;
+var max_x = 610,
+	min_x = 30,	
+	min_y = 30,
+	max_y = 466;
 
 // 원 시작지점, 반지름, 원 모양을 결정하는 변수들
-var x = 50,
-	y = 207,
+var x = 200,
+	y = 200,
  	r = 1,
  	startAngle = 0,
  	endAngle =  Math.PI*2;
@@ -21,6 +21,7 @@ var dx=1,
 var moving;
 
 var inc = true;
+// -------------------------------------------------------------------
 
 // 공의 위치,움직임을 control하는 클래스
 class Ball {
@@ -31,43 +32,33 @@ class Ball {
 		clearInterval(moving);
 	}
 		position(){
-		var x_temp = x,
-		    y_temp = y;
-		console.log("x_temp: "+x_temp+" y_temp: "+y_temp+"");
-		if(x_temp<=max_x/2){
-			x = Math.floor( ( Math.random() * (max_x - max_x/2))+20)
-		}else{
-			x = Math.floor( ( Math.random() * (max_x/2 - min_x))-20)
-		};
-		if(y_temp<=max_y/2){
-			y = Math.floor( ( Math.random() * (max_y - max_y/2))+20)
-		}else{
-			y = Math.floor( ( Math.random() * (max_y/2 - min_y))-20)
-		};
-		
+			x = Math.random() * ((max_x) - (min_x))+min_x;	
+			y = Math.random() * ((max_y) - (min_y))+min_y;
+			console.log("x: "+x+"");
+			console.log("y: "+y+"");
 	}
 		
-		size(){
-			var size_fast = 0.09;
+		first_size(){
+			r = 1;
+	}	
+	
+		moving_size(){
+		var size_fast = 0.09; //0.09
 		if(inc){
 			r+=size_fast;	
 		}else{
 			r-=size_fast;
 		}
 	}
-			
-		draw1(){
-			draw1();
-		}
-	
 }
 
 let ball = new Ball();
+// ---------------------------------------------------------------------------
 
 function macroBall(){
 	ball.stop();
 	ball.position();
-	console.log("xpos: "+x+" ypos: "+y+"");
+	ball.first_size();
 	ball.move();
 }
 
@@ -83,6 +74,15 @@ context.stroke();
 
 }
 
+// 원을 지웠다 다시그리는 함수
+function draw(){
+	context.clearRect(0,0,canvas.width,canvas.height); // canvas 지우기 코드
+	CircleForm(x,y,r,startAngle, endAngle);
+	rad_check(r);
+	ball.moving_size();
+}
+
+// 원 반지름 체크하는 함수
 function rad_check(r){
 	if(r>=30){
 		inc = false;
@@ -93,28 +93,6 @@ function rad_check(r){
 
 }
 
-// 원을 지웠다 다시그리는 함수
-function draw(){
-	context.clearRect(0,0,canvas.width,canvas.height); // canvas 지우기 코드
-	CircleForm(x,y,r,startAngle, endAngle);
-	rad_check(r);
-	ball.size();
-
-	
-	
-}
-function draw1(){
-	CircleForm(x,y,r,startAngle, endAngle);
-	if(x<min_x||x>max_x || y<min_y||y>max_y){
-		macroBall();
-		
-	}else{
-		x += dx;
-		y -= dy;
-	}
-	
-
-}
 
 // canvas에서 마우스 클릭시 함수를 발동시키는 코드
 canvas.addEventListener('mousedown', function(e) {
