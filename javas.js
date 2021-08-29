@@ -14,85 +14,108 @@ var x = 200,
  	startAngle = 0,
  	endAngle =  Math.PI*2;
 
-// 원 이동속도
-var dx=1,
-	dy=1;
-
 var moving;
 
 var inc = true;
+
+let balls=[]
+
 // -------------------------------------------------------------------
 
 // 공의 위치,움직임을 control하는 클래스
 class Ball {
-		move(){
-		moving = setInterval(draw, 1);
+	constructor(){
+		this.x = Math.random()*canvas.width
+		this.y = Math.random()*canvas.height
+		this.r = 1;
+		this.c = "orange";
+		this.speed=1;
 	}
-		stop(){
-		clearInterval(moving);
+	draw(){
+		context.beginPath();
+		context.arc(this.x,this.y,this.r,startAngle, endAngle);
+		context.fillStyle = "orange";
+		context.fill();
+		context.stroke();
 	}
-		position(){
-			x = Math.random() * ((max_x) - (min_x))+min_x;	
-			y = Math.random() * ((max_y) - (min_y))+min_y;
-			console.log("x: "+x+"");
-			console.log("y: "+y+"");
+
+	grow(){
+	if(inc){
+		this.r+=this.speed;	
+		console.log("up"+this.r+"");
+	}else{
+		this.r-=this.speed;
+		console.log("down"+this.r+"");
 	}
-		
-		first_size(){
-			r = 1;
-	}	
+	}
 	
-		moving_size(){
-		var size_fast = 0.09; //0.09
-		if(inc){
-			r+=size_fast;	
-		}else{
-			r-=size_fast;
+	rad_check(){
+	if(this.r>=30){
+		inc = false;
+		console.log(inc);
+
+		}
+	if(this.r<=2){
+		inc = true;
+		console.log(inc);
 		}
 	}
 }
-
-let ball = new Ball();
 // ---------------------------------------------------------------------------
 
-function macroBall(){
-	ball.stop();
-	ball.position();
-	ball.first_size();
-	ball.move();
-}
-
-//원을 생성, 디자인하는 함수
-function CircleForm(x,y,r,startAngle, endAngle){
-var canvas = document.getElementById('myCanvas');
-var context = canvas.getContext('2d');
-context.beginPath();
-context.arc(x,y,r,startAngle, endAngle);
-context.fillStyle = "orange";
-context.fill();
-context.stroke();
-
-}
-
-// 원을 지웠다 다시그리는 함수
-function draw(){
-	context.clearRect(0,0,canvas.width,canvas.height); // canvas 지우기 코드
-	CircleForm(x,y,r,startAngle, endAngle);
-	rad_check(r);
-	ball.moving_size();
-}
-
-// 원 반지름 체크하는 함수
-function rad_check(r){
-	if(r>=30){
-		inc = false;
+function creatballs(){
+	for(let i=0; i<50;i++){
+		balls.push(new Ball)
 	}
-	if(r<=2){
-		inc = true;
-	}
-
 }
 
+creatballs();
+
+function drawballs(){
+	for(let i=0; i<50;i++){
+		balls[i].draw();
+		balls[i].rad_check();
+		balls[i].grow();
+		
+	}
+}
+
+setInterval(() => {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawballs()
+}, 50)
+
+
+
+/*
+class Drawing{
+	constructor(x,y,r,startAngle, endAngle){
+		this.x = x;
+		this.y = y;
+		this.r = r;
+		this.startAngle = startAngle;
+		this.endAngle = endAngle;
+	}
+	
+	function CircleForm(){
+		var canvas = document.getElementById('myCanvas');
+		var context = canvas.getContext('2d');
+		context.beginPath();
+		context.arc(this.x,this.y,this.r,this.startAngle, this.endAngle);
+		context.fillStyle = "orange";
+		context.fill();
+		context.stroke();
+	}
+	
+	function draw(){
+		context.clearRect(0,0,canvas.width,canvas.height); // canvas 지우기 코드
+		CircleForm(this.x,this.y,this.r,this.startAngle, this.endAngle);
+		rad_check(this.r);
+		ball.moving_size();
+	}	
+}
+*/
+	
 
 // canvas에서 마우스 클릭시 함수를 발동시키는 코드
 canvas.addEventListener('mousedown', function(e) {
@@ -117,7 +140,6 @@ function judgeHit(xpos, ypos,moving){
 	}
 }
 
-ball.move();
 
 
 
